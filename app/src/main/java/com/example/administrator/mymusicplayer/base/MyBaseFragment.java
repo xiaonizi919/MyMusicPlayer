@@ -29,7 +29,7 @@ public abstract class MyBaseFragment extends Fragment {
     }
 
     /**
-     * 打开activity
+     * 打开activity test
      * @param _class
      */
     protected void startActivity(Class<?> _class) {
