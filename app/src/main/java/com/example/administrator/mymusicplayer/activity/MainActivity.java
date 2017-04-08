@@ -1,7 +1,9 @@
-package com.example.administrator.mymusicplayer;
+package com.example.administrator.mymusicplayer.activity;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+
+import com.example.administrator.mymusicplayer.R;
 
 public class MainActivity extends AppCompatActivity {
 
