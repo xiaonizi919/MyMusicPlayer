@@ -1,21 +1,29 @@
 package com.example.administrator.mymusicplayer.application;
 
 import android.app.Application;
-import android.support.compat.BuildConfig;
 
-import org.greenrobot.eventbus.EventBus;
+import com.example.administrator.mymusicplayer.api.MusicService;
+
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MyApplication extends Application {
-    public static EventBus mEventBus;
-
+    /**
+     * 全局的api接口
+     */
+    public static MusicService mMusicService;
     @Override
     public void onCreate() {
         super.onCreate();
-        initEventBus();
+        initRetrofit();
     }
 
-    private void initEventBus() {
-        mEventBus = EventBus.builder().throwSubscriberException(BuildConfig.DEBUG).installDefaultEventBus();
+    private void initRetrofit() {
+        Retrofit mRetrofit = new Retrofit.Builder()
+                .baseUrl(MusicService.BASE_URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+        mMusicService= mRetrofit.create(MusicService.class);
     }
 
     @Override
