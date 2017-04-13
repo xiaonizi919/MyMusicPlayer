@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">MyMusicPlayer</string>
+    <array name="main_tab">
+        <item>我的</item>
+        <item>歌单</item>
+        <item>排行榜</item>
+    </array>
 </resources>

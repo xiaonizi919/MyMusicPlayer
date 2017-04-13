@@ -34,7 +34,7 @@ public abstract class MyBaseActivity extends AppCompatActivity {
 
     // 可能全屏或者没有ActionBar等
     private void setWindowFeature() {
-        requestWindowFeature(Window.FEATURE_NO_TITLE);// 例
+        supportRequestWindowFeature(Window.FEATURE_NO_TITLE);
     }
 
     //返回键返回事件
