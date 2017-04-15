@@ -2,13 +2,18 @@ package com.example.administrator.mymusicplayer.base;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.view.KeyEvent;
 import android.view.Window;
 import android.widget.Toast;
 
+import com.example.administrator.mymusicplayer.R;
+import com.example.administrator.mymusicplayer.fragment.QuickControlFragment;
+
 public abstract class MyBaseActivity extends AppCompatActivity {
     protected final String TAG = this.getClass().getSimpleName();
+    private QuickControlFragment mFragment;
 
     // 初始化UI，setContentView等
     protected abstract void initContentView(Bundle savedInstanceState);
@@ -51,6 +56,7 @@ public abstract class MyBaseActivity extends AppCompatActivity {
 
     /**
      * 吐司
+     *
      * @param msg
      */
     protected void showToast(String msg) {
@@ -59,6 +65,30 @@ public abstract class MyBaseActivity extends AppCompatActivity {
 
     protected void showToast(int res) {
         Toast.makeText(this, getResources().getString(res), Toast.LENGTH_SHORT).show();
+    }
+
+    /**
+     * 在每个activity的底部添加FrameLayout用来显示底部控制栏
+     * <FrameLayout
+     * android:id="@+id/bottom_container"
+     * android:layout_width="match_parent"
+     * android:layout_height="50dp"/>
+     *
+     * @param show 显示或关闭底部播放控制栏
+     */
+    protected void showQuickControl(boolean show) {
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        if (show) {
+            if (mFragment == null) {
+                mFragment = QuickControlFragment.newInstance();
+                ft.add(R.id.bottom_container, mFragment).commitAllowingStateLoss();
+            } else {
+                ft.show(mFragment).commitAllowingStateLoss();
+            }
+        } else {
+            if (mFragment != null)
+                ft.hide(mFragment).commitAllowingStateLoss();
+        }
     }
 
 }
