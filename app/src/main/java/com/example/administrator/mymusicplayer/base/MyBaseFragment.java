@@ -84,7 +84,6 @@ public abstract class MyBaseFragment extends Fragment {
 
     /**
      * 发送消息
-     *
      * @param event event需集成BaseEvent
      */
     public final <EVENT extends BaseEvent> void sendMessage(@NonNull EVENT event) {

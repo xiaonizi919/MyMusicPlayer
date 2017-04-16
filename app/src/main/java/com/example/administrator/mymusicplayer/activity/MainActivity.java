@@ -1,6 +1,7 @@
 package com.example.administrator.mymusicplayer.activity;
 
-import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
@@ -18,7 +19,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public class MainActivity extends MyBaseActivity {
@@ -28,31 +28,22 @@ public class MainActivity extends MyBaseActivity {
     ViewPager mViewPager;
     @Bind(R.id.iv_search)
     ImageView mSearch;
-    private List<Fragment> mFragments;
-    @Override
-    protected void initContentView(Bundle savedInstanceState) {
-        setContentView(R.layout.activity_main);
-    }
-
-    @Override
-    protected void findViews() {
-        ButterKnife.bind(this);
-    }
 
     @Override
     protected void initData() {
-        mFragments=new ArrayList<>();
-        mFragments.add(new MineFragment());
-        mFragments.add(new SingsFragment());
-        mFragments.add(new RankFragment());
+        List<Fragment> fragments = new ArrayList<>();
+        fragments.add(new MineFragment());
+        fragments.add(new SingsFragment());
+        fragments.add(new RankFragment());
+        MyPagerAdapter pagerAdapter = new MyPagerAdapter(getSupportFragmentManager(), this, fragments);
+        mViewPager.setAdapter(pagerAdapter);
+        mTabLayout.setupWithViewPager(mViewPager);
+        showQuickControl(true);
     }
 
     @Override
     protected void setData() {
-        MyPagerAdapter pagerAdapter=new MyPagerAdapter(getSupportFragmentManager(),this,mFragments);
-        mViewPager.setAdapter(pagerAdapter);
-        mTabLayout.setupWithViewPager(mViewPager);
-        showQuickControl(true);
+
     }
 
     @Override
@@ -60,12 +51,36 @@ public class MainActivity extends MyBaseActivity {
 
     }
 
+    @Override
+    protected int getLayoutRes() {
+        return R.layout.activity_main;
+    }
+
     @OnClick({R.id.iv_search})
-    public void onClick(View view){
-        switch (view.getId()){
+    public void onClick(View view) {
+        switch (view.getId()) {
             case R.id.iv_search:
                 // TODO: 2017/4/15 搜索
                 break;
+        }
+    }
+
+    private boolean isExit;
+    private Handler mHandler=new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            isExit=false;
+        }
+    };
+    @Override
+    public void onBackPressed() {
+        if (isExit) {
+            super.onBackPressed();
+        } else{
+            showToast("再点击一次退出应用");
+            mHandler.sendEmptyMessageDelayed(0,2000);
+            isExit=true;
         }
     }
 }

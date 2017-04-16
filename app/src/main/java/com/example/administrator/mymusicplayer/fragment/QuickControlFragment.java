@@ -1,7 +1,14 @@
 package com.example.administrator.mymusicplayer.fragment;
 
+import android.view.View;
+import android.widget.LinearLayout;
+
 import com.example.administrator.mymusicplayer.R;
+import com.example.administrator.mymusicplayer.activity.PlayActivity;
 import com.example.administrator.mymusicplayer.base.MyBaseFragment;
+
+import butterknife.Bind;
+import butterknife.OnClick;
 
 /**
  * Created by liukq on 2017/4/15.
@@ -9,8 +16,8 @@ import com.example.administrator.mymusicplayer.base.MyBaseFragment;
  */
 
 public class QuickControlFragment extends MyBaseFragment {
-
-    private static QuickControlFragment mFragment;
+    @Bind(R.id.lin_mini_play)
+    LinearLayout mLinPlay;
 
     public static  QuickControlFragment newInstance(){
         return new QuickControlFragment();
@@ -33,5 +40,15 @@ public class QuickControlFragment extends MyBaseFragment {
     @Override
     protected void initListener() {
 
+    }
+
+    @OnClick({R.id.lin_mini_play})
+    public void onClick(View view){
+        switch (view.getId()){
+            case R.id.lin_mini_play:
+                startActivity(PlayActivity.class);
+                getActivity().overridePendingTransition(R.anim.in_from_bottom,R.anim.out_to_bottom);
+                break;
+        }
     }
 }
