@@ -5,8 +5,8 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.administrator.mymusicplayer.R;
+import com.example.administrator.mymusicplayer.activity.LocalMusicActivity;
 import com.example.administrator.mymusicplayer.base.MyBaseFragment;
-import com.example.administrator.mymusicplayer.utils.MusicUtils;
 
 import butterknife.Bind;
 import butterknife.OnClick;
@@ -45,22 +45,9 @@ public class MineFragment extends MyBaseFragment {
     public void onClick(View view){
         switch (view.getId()){
             case R.id.btn_scan:
-                scanMusic();
+                startActivity(LocalMusicActivity.class);
                 break;
         }
     }
 
-    private void scanMusic() {
-        MusicUtils.getMusicData(getActivity(), new MusicUtils.ScanCallback() {
-            @Override
-            public void scanProgress(int songCount) {
-                test.setText("已扫描"+songCount+"首");
-            }
-
-            @Override
-            public void onComplete(int sumCount) {
-                test.setText("扫描完成，共"+sumCount+"首");
-            }
-        });
-    }
 }

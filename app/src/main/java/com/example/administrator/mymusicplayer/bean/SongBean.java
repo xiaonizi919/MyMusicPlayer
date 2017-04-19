@@ -78,4 +78,16 @@ public class SongBean {
     public void setAlbum(String album) {
         this.album = album;
     }
+
+    @Override
+    public String toString() {
+        return "SongBean{" +
+                "singer='" + singer + '\'' +
+                ", songName='" + songName + '\'' +
+                ", path='" + path + '\'' +
+                ", duration=" + duration +
+                ", size=" + size +
+                ", album='" + album + '\'' +
+                '}';
+    }
 }

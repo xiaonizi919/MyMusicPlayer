@@ -24,6 +24,8 @@
         </activity>
         <activity android:name=".activity.PlayActivity">
         </activity>
+        <activity android:name=".activity.LocalMusicActivity">
+        </activity>
     </application>
 
 </manifest>

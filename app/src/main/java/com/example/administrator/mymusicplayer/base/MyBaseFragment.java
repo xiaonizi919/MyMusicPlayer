@@ -48,7 +48,6 @@ public abstract class MyBaseFragment extends Fragment {
         intent.setFlags(flag);
         startActivity(intent);
     }
-
     /**
      * 绑定布局文件
      */
