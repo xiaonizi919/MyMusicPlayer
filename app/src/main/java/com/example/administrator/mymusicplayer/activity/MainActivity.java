@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import com.example.administrator.mymusicplayer.R;
 import com.example.administrator.mymusicplayer.adapter.MyPagerAdapter;
 import com.example.administrator.mymusicplayer.base.MyBaseActivity;
+import com.example.administrator.mymusicplayer.bean.SongBean;
 import com.example.administrator.mymusicplayer.fragment.MineFragment;
 import com.example.administrator.mymusicplayer.fragment.RankFragment;
 import com.example.administrator.mymusicplayer.fragment.SingsFragment;
@@ -28,6 +29,7 @@ public class MainActivity extends MyBaseActivity {
     ViewPager mViewPager;
     @Bind(R.id.iv_search)
     ImageView mSearch;
+    public static List<SongBean> songList;
 
     @Override
     protected void initData() {
@@ -39,6 +41,7 @@ public class MainActivity extends MyBaseActivity {
         mViewPager.setAdapter(pagerAdapter);
         mTabLayout.setupWithViewPager(mViewPager);
         showQuickControl(true);
+        songList=new ArrayList<>();
     }
 
     @Override

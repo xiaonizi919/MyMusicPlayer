@@ -1,15 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/activity_local_music"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    android:orientation="vertical"
     tools:context="com.example.administrator.mymusicplayer.activity.LocalMusicActivity">
+
+    <com.example.administrator.mymusicplayer.widget.MyTitleBar
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/tab_height"
+        app:showMenu="false"
+        app:titleText="本地音乐"/>
 
     <ListView
         android:id="@+id/local_music_lv"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        ></ListView>
-</RelativeLayout>
+        android:layout_height="0dp"
+        android:layout_weight="1"/>
+
+    <FrameLayout
+        android:id="@+id/bottom_container"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"/>
+</LinearLayout>

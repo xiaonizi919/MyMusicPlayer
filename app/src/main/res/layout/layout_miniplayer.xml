@@ -60,7 +60,7 @@
             android:layout_height="40dp"
             android:layout_gravity="center_vertical"
             android:layout_marginRight="5dp"
-            android:src="@mipmap/pause_unselected"/>
+            android:src="@mipmap/next"/>
     </LinearLayout>
 
 

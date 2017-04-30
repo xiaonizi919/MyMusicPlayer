@@ -12,11 +12,11 @@ import java.util.List;
 
 public abstract class MyBaseAdapter<T> extends BaseAdapter {
 
-    private static final String TAG = MyBaseAdapter.class.getSimpleName();
+    private final String TAG = this.getClass().getSimpleName();
 
     protected LayoutInflater mInflater;
-    private Context mContext;
-    private List<T> mData;
+    protected Context mContext;
+    protected List<T> mData;
 
     public MyBaseAdapter(Context mContext, List<T> mData) {
         this.mContext = mContext;

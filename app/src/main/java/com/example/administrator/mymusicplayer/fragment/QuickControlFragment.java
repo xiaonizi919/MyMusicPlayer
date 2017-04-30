@@ -47,7 +47,7 @@ public class QuickControlFragment extends MyBaseFragment {
         switch (view.getId()){
             case R.id.lin_mini_play:
                 startActivity(PlayActivity.class);
-                getActivity().overridePendingTransition(R.anim.in_from_bottom,R.anim.out_to_bottom);
+//                getActivity().overridePendingTransition(R.anim.in_from_bottom,R.anim.out_to_bottom);
                 break;
         }
     }

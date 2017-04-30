@@ -31,6 +31,41 @@ public class SongBean {
      */
     private String album;
 
+    /**
+     * 专辑id
+     */
+    private String albumId;
+
+    /**
+     * 专辑封面
+     */
+    private String albumArt;
+    /**
+     * 播放状态
+     */
+    private int state;
+    /**
+     * 缓存状态
+     */
+    private int bufferPercent;
+    /**
+     * 播放进度
+     */
+    private float progress;
+    /**
+     * 歌曲时间
+     */
+    private String totalTime;
+    /**
+     * 当前播放时间00：00格式
+     */
+    private String currTime;
+    /**
+     * 缓存状态
+     */
+    private int currPosition;
+
+
     public int getDuration() {
         return duration;
     }
@@ -88,6 +123,72 @@ public class SongBean {
                 ", duration=" + duration +
                 ", size=" + size +
                 ", album='" + album + '\'' +
+                ", albumId='" + albumId + '\'' +
+                ", albumArt='" + albumArt + '\'' +
                 '}';
+    }
+
+    public String getAlbumId() {
+        return albumId;
+    }
+
+    public void setAlbumId(String albumId) {
+        this.albumId = albumId;
+    }
+
+    public String getAlbumArt() {
+        return albumArt;
+    }
+
+    public void setAlbumArt(String albumArt) {
+        this.albumArt = albumArt;
+    }
+
+    public int getState() {
+        return state;
+    }
+
+    public int getBufferPercent() {
+        return bufferPercent;
+    }
+
+    public void setBufferPercent(int bufferPercent) {
+        this.bufferPercent = bufferPercent;
+    }
+
+    public void setState(int state) {
+        this.state = state;
+    }
+
+    public float getProgress() {
+        return progress;
+    }
+
+    public void setProgress(float progress) {
+        this.progress = progress;
+    }
+
+    public String getTotalTime() {
+        return totalTime;
+    }
+
+    public void setTotalTime(String totalTime) {
+        this.totalTime = totalTime;
+    }
+
+    public String getCurrTime() {
+        return currTime;
+    }
+
+    public void setCurrTime(String currTime) {
+        this.currTime = currTime;
+    }
+
+    public int getCurrPosition() {
+        return currPosition;
+    }
+
+    public void setCurrPosition(int currPosition) {
+        this.currPosition = currPosition;
     }
 }

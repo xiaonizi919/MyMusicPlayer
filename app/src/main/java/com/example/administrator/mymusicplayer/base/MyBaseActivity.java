@@ -89,10 +89,10 @@ public abstract class MyBaseActivity extends AppCompatActivity {
 
     /**
      * 在每个activity的底部添加FrameLayout用来显示底部控制栏
-     * <FrameLayout
-     * android:id="@+id/bottom_container"
-     * android:layout_width="match_parent"
-     * android:layout_height="50dp"/>
+     <FrameLayout
+     android:id="@+id/bottom_container"
+     android:layout_width="match_parent"
+     android:layout_height="50dp"/>
      *
      * @param show 显示或关闭底部播放控制栏
      */
