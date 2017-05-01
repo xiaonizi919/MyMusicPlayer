@@ -34,4 +34,6 @@ dependencies {
     compile 'com.jakewharton:butterknife:7.0.0'
     compile 'com.squareup.okhttp3:okhttp:3.6.0'
     compile 'com.squareup.retrofit2:converter-gson:2.2.0'
+    compile files('src/main/libs/pinyin4android1.0.jar')
+    compile files('src/main/libs/pinyin4j-2.5.0.jar')
 }

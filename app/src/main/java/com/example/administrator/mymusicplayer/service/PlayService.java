@@ -10,6 +10,7 @@ import android.util.Log;
 
 import com.example.administrator.mymusicplayer.activity.MainActivity;
 import com.example.administrator.mymusicplayer.bean.SongBean;
+import com.example.administrator.mymusicplayer.config.MyConfig;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -72,7 +73,7 @@ public class PlayService extends Service implements MediaPlayer.OnBufferingUpdat
                 break;
             case ACTION_PLAY_LIST://播放列表内音乐
                 STATE = PLAYING;
-                int position = intent.getIntExtra("position", 0);
+                int position = intent.getIntExtra(MyConfig.position, 0);
                 playMusic(musicList.get(position));
                 break;
             case ACTION_PLAY_CURR://播放当前正在播放的(处于暂停状态)音乐

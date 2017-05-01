@@ -65,6 +65,8 @@ public class SongBean {
      */
     private int currPosition;
 
+    private String pinyin;
+
 
     public int getDuration() {
         return duration;
@@ -190,5 +192,13 @@ public class SongBean {
 
     public void setCurrPosition(int currPosition) {
         this.currPosition = currPosition;
+    }
+
+    public String getPinyin() {
+        return pinyin;
+    }
+
+    public void setPinyin(String pinyin) {
+        this.pinyin = pinyin;
     }
 }

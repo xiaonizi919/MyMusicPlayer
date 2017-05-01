@@ -1,13 +1,17 @@
 package com.example.administrator.mymusicplayer.base;
 
 import android.content.Context;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.TextView;
+
 import com.example.administrator.mymusicplayer.R;
 import com.squareup.picasso.Picasso;
+
 import java.util.List;
 
 public abstract class MyBaseAdapter<T> extends BaseAdapter {
@@ -44,6 +48,11 @@ public abstract class MyBaseAdapter<T> extends BaseAdapter {
         Picasso.with(mContext).load(path)
                 .placeholder(R.mipmap.default_icon)
                 .error(R.mipmap.player_error_normal).into(view);
+    }
+
+    protected void setText(String text, TextView view) {
+        if (!TextUtils.isEmpty(text))
+            view.setText(text);
     }
 
     @Override

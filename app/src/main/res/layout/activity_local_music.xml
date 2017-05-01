@@ -16,11 +16,42 @@
         app:showMenu="false"
         app:titleText="本地音乐"/>
 
-    <ListView
-        android:id="@+id/local_music_lv"
-        android:layout_width="match_parent"
+    <RelativeLayout
+        android:layout_width="wrap_content"
         android:layout_height="0dp"
-        android:layout_weight="1"/>
+        android:layout_weight="1"
+        android:orientation="horizontal">
+
+
+        <ListView
+            android:id="@+id/local_music_lv"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginRight="10dp"
+            android:scrollbars="none"
+            tools:ignore="RtlHardcoded"/>
+
+        <TextView
+            android:id="@+id/tv_letter_overlay"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:layout_centerInParent="true"
+            android:background="@drawable/overlay_bg"
+            android:gravity="center"
+            android:textColor="@android:color/white"
+            android:textSize="48sp"
+            android:textStyle="bold"
+            android:visibility="gone"/>
+
+        <com.example.administrator.mymusicplayer.widget.SideLetterBar
+            android:id="@+id/side_letter_bar"
+            android:layout_width="20dp"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:layout_marginBottom="20dp"
+            android:layout_marginTop="20dp"/>
+
+    </RelativeLayout>
 
     <FrameLayout
         android:id="@+id/bottom_container"
