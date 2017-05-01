@@ -27,6 +27,7 @@ public class LocalMusicAdapter extends MyBaseAdapter<SongBean> {
     public LocalMusicAdapter(Context mContext, List<SongBean> mData) {
         super(mContext, mData);
         letterIndexes = new HashMap<>();
+        temp = "-1";
         Collections.sort(mData, new Comparator<SongBean>() {
             @Override
             public int compare(SongBean o1, SongBean o2) {
@@ -40,8 +41,8 @@ public class LocalMusicAdapter extends MyBaseAdapter<SongBean> {
             }
         });
         for (int i = 0 ; i < mData.size() ; i ++){
-            if (!mData.get(i).getPinyin().equals(temp)){
-                temp = mData.get(i).getPinyin();
+            if (!mData.get(i).getPinyin().substring(0,1).equals(temp)){
+                temp = mData.get(i).getPinyin().substring(0,1);
                 letterIndexes.put(mData.get(i).getPinyin().substring(0,1).toLowerCase(),i);
             }
         }
