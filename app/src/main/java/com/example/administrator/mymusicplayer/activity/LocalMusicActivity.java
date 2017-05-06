@@ -11,8 +11,10 @@ import com.example.administrator.mymusicplayer.adapter.LocalMusicAdapter;
 import com.example.administrator.mymusicplayer.base.MyBaseActivity;
 import com.example.administrator.mymusicplayer.bean.SongBean;
 import com.example.administrator.mymusicplayer.config.MyConfig;
+import com.example.administrator.mymusicplayer.db.DatabaseUtils;
 import com.example.administrator.mymusicplayer.service.PlayService;
 import com.example.administrator.mymusicplayer.utils.MusicUtils;
+import com.example.administrator.mymusicplayer.utils.sharepre.ShareUtils;
 import com.example.administrator.mymusicplayer.widget.SideLetterBar;
 import com.example.administrator.mymusicplayer.widget.alertview.AlertView;
 import com.example.administrator.mymusicplayer.widget.alertview.OnItemClickListener;
@@ -21,6 +23,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
+
+import static com.example.administrator.mymusicplayer.db.DatabaseUtils.getHelper;
 
 public class LocalMusicActivity extends MyBaseActivity {
 
@@ -38,6 +42,9 @@ public class LocalMusicActivity extends MyBaseActivity {
 
     @Override
     protected void initData() {
+        //必须先初始化
+        DatabaseUtils.initHelper(this,"localmusic.db");
+
         showQuickControl(true);
         mSongList = new ArrayList<>();
         mSideLetterBar.setOverlay(mOverlay);
@@ -45,7 +52,13 @@ public class LocalMusicActivity extends MyBaseActivity {
 
     @Override
     protected void setData() {
-        mSongList = MusicUtils.getInstance().getMusicData(LocalMusicActivity.this);
+        if (ShareUtils.isFirstUse(this)){
+            mSongList = MusicUtils.getInstance().getMusicData(LocalMusicActivity.this);
+            getHelper().saveAll(mSongList);
+            ShareUtils.putFirstUse(this);
+        }else {
+            mSongList =  DatabaseUtils.getHelper().queryAll(SongBean.class);
+        }
         mAdapter = new LocalMusicAdapter(this, mSongList);
         mListView.setAdapter(mAdapter);
         if (MainActivity.songList.size() == 0)
