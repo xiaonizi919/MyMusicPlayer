@@ -11,6 +11,7 @@ import android.provider.MediaStore;
 import android.text.TextUtils;
 
 import com.example.administrator.mymusicplayer.bean.SongBean;
+import com.example.administrator.mymusicplayer.utils.pinyin.PinYin;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -60,8 +61,9 @@ public class MusicUtils {
                 song.setDuration(cursor.getInt(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DURATION)));
                 song.setSize(cursor.getLong(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.SIZE)));
                 song.setAlbumId(cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.ALBUM_ID)));
-                if (!TextUtils.isEmpty(song.getAlbumId()))
+                if (!TextUtils.isEmpty(song.getAlbumId())) {
                     song.setAlbumArt(getAlbumArt(context, Integer.parseInt(song.getAlbumId())));
+                }
                 if (song.getSize() > 1000 * 800) {
                     // 注释部分是切割标题，分离出歌曲名和歌手 （本地媒体库读取的歌曲信息不规范）
                     if (song.getSongName().contains("-")) {
@@ -69,6 +71,7 @@ public class MusicUtils {
                         song.setSinger(str[0]);
                         song.setSongName(str[1]);
                     }
+                    song.setPinyin(PinYin.getPinYin(song.getSongName()));
                     if (null != mScanCallback)
                         mScanCallback.scanProgress(count);
                     count++;
