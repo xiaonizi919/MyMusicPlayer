@@ -3,6 +3,7 @@ package com.example.administrator.mymusicplayer.activity;
 import android.content.Intent;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -23,6 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
+import butterknife.OnClick;
 
 import static com.example.administrator.mymusicplayer.db.DatabaseUtils.getHelper;
 
@@ -35,6 +37,8 @@ public class LocalMusicActivity extends MyBaseActivity {
     private List<SongBean> mSongList;
     @Bind(R.id.tv_letter_overlay)
     TextView mOverlay;
+    @Bind(R.id.btn_scan)
+    Button mButton;
 
     private AlertView mAlertView;
     private int longClickPosition = -1;
@@ -42,9 +46,6 @@ public class LocalMusicActivity extends MyBaseActivity {
 
     @Override
     protected void initData() {
-        //必须先初始化
-        DatabaseUtils.initHelper(this,"localmusic.db");
-
         showQuickControl(true);
         mSongList = new ArrayList<>();
         mSideLetterBar.setOverlay(mOverlay);
@@ -52,17 +53,15 @@ public class LocalMusicActivity extends MyBaseActivity {
 
     @Override
     protected void setData() {
-        if (ShareUtils.isFirstUse(this)){
-            mSongList = MusicUtils.getInstance().getMusicData(LocalMusicActivity.this);
-            getHelper().saveAll(mSongList);
-            ShareUtils.putFirstUse(this);
-        }else {
-            mSongList =  DatabaseUtils.getHelper().queryAll(SongBean.class);
+        if (ShareUtils.isFirstUse(this)) {
+            mButton.setVisibility(View.VISIBLE);
+            mSideLetterBar.setVisibility(View.GONE);
+        } else {
+            mButton.setVisibility(View.GONE);
+            mSongList = DatabaseUtils.getHelper().queryAll(SongBean.class);
+            mAdapter = new LocalMusicAdapter(this, mSongList);
+            mListView.setAdapter(mAdapter);
         }
-        mAdapter = new LocalMusicAdapter(this, mSongList);
-        mListView.setAdapter(mAdapter);
-        if (MainActivity.songList.size() == 0)
-            MainActivity.songList.addAll(mSongList);
     }
 
     @Override
@@ -98,8 +97,8 @@ public class LocalMusicActivity extends MyBaseActivity {
         mSideLetterBar.setOnLetterChangedListener(new SideLetterBar.OnLetterChangedListener() {
             @Override
             public void onLetterChanged(String letter) {
-                int position=mAdapter.getLetterPosition(letter);
-                if (position!=-1)
+                int position = mAdapter.getLetterPosition(letter);
+                if (position != -1)
                     mListView.setSelection(position);
             }
         });
@@ -109,4 +108,21 @@ public class LocalMusicActivity extends MyBaseActivity {
     protected int getLayoutRes() {
         return R.layout.activity_local_music;
     }
+
+    @OnClick({R.id.btn_scan})
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.btn_scan:
+                mButton.setEnabled(false);
+                mSongList = MusicUtils.getInstance().getMusicData(LocalMusicActivity.this);
+                mButton.setVisibility(View.GONE);
+                mAdapter = new LocalMusicAdapter(this, mSongList);
+                mListView.setAdapter(mAdapter);
+                mSideLetterBar.setVisibility(View.VISIBLE);
+                getHelper().saveAll(mSongList);
+                ShareUtils.putFirstUse(this);
+                break;
+        }
+    }
+
 }

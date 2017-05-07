@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.administrator.mymusicplayer.R;
+import com.example.administrator.mymusicplayer.activity.MainActivity;
 import com.example.administrator.mymusicplayer.base.MyBaseAdapter;
 import com.example.administrator.mymusicplayer.bean.SongBean;
 
@@ -46,6 +47,8 @@ public class LocalMusicAdapter extends MyBaseAdapter<SongBean> {
                 letterIndexes.put(mData.get(i).getPinyin().substring(0,1).toLowerCase(),i);
             }
         }
+        if (MainActivity.songList.size()==0)
+            MainActivity.songList.addAll(mData);
     }
 
     @Override

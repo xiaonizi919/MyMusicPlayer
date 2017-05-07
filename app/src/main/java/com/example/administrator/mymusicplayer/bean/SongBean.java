@@ -67,6 +67,15 @@ public class SongBean {
 
     private String pinyin;
 
+    /**
+     * 是否在播放列表内
+     */
+    private boolean isInPlayList;
+    /**
+     * 来源 分为本地音乐 网络音乐等
+     */
+    private String source;
+
 
     public int getDuration() {
         return duration;
@@ -119,14 +128,8 @@ public class SongBean {
     @Override
     public String toString() {
         return "SongBean{" +
-                "singer='" + singer + '\'' +
-                ", songName='" + songName + '\'' +
-                ", path='" + path + '\'' +
-                ", duration=" + duration +
-                ", size=" + size +
-                ", album='" + album + '\'' +
-                ", albumId='" + albumId + '\'' +
-                ", albumArt='" + albumArt + '\'' +
+                "songName='" + songName + '\'' +
+                ", pinyin='" + pinyin + '\'' +
                 '}';
     }
 
@@ -200,5 +203,21 @@ public class SongBean {
 
     public void setPinyin(String pinyin) {
         this.pinyin = pinyin;
+    }
+
+    public boolean isInPlayList() {
+        return isInPlayList;
+    }
+
+    public void setInPlayList(boolean inPlayList) {
+        isInPlayList = inPlayList;
+    }
+
+    public String getSource() {
+        return source;
+    }
+
+    public void setSource(String source) {
+        this.source = source;
     }
 }

@@ -44,11 +44,6 @@ public class PlayService extends Service implements MediaPlayer.OnBufferingUpdat
 
     private int bufferPercent = 0;
 
-    //循环模式
-    private static final int MODE_LIST = 0;
-    private static final int MODE_ROADOM = 1;
-    private static final int MODE_SINGLE = 2;
-
     private List<SongBean> musicList;//音乐列表
     private List<SongBean> playList;//记录播放顺序
 
@@ -115,19 +110,34 @@ public class PlayService extends Service implements MediaPlayer.OnBufferingUpdat
      * @param flag 1为上一首，2为下一首
      */
     private void playNext(int flag) {
+        if (flag == 1) {
 
+        } else {
+
+        }
     }
 
     @Override
     public void onCreate() {
-        musicList = new ArrayList<>();
-        playList = new ArrayList<>();
-        musicList.addAll(MainActivity.songList);
+        getListFormDb();
         timeIntent = new Intent(ACTION_UPDATE_TIME);
         mp.setAudioStreamType(AudioManager.STREAM_MUSIC);//设置播放类型为音乐
         mp.setOnBufferingUpdateListener(this);//缓冲进度
         mp.setOnCompletionListener(this);
         STATE = STOP;
+    }
+
+    /**
+     * 从数据库中或者音乐列表和播放列表
+     */
+    private void getListFormDb() {
+        musicList = new ArrayList<>();
+        playList = new ArrayList<>();
+        musicList.addAll(MainActivity.songList);
+        for (SongBean songBean : musicList) {
+            if (songBean.isInPlayList())
+                playList.add(songBean);
+        }
     }
 
     @Nullable
@@ -163,7 +173,7 @@ public class PlayService extends Service implements MediaPlayer.OnBufferingUpdat
                     if (mp.getCurrentPosition() < mp.getDuration()) {
                         int music_length = mp.getDuration();
                         int curr = mp.getCurrentPosition();
-                        float progress = (float) (curr*100.0/music_length);
+                        float progress = (float) (curr * 100.0 / music_length);
                         currSong.setTotalTime(toTime(music_length));
                         currSong.setCurrTime(toTime(curr));
                         currSong.setState(STATE);

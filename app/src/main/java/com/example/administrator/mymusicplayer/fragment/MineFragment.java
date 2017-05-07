@@ -19,7 +19,7 @@ import butterknife.OnClick;
 public class MineFragment extends MyBaseFragment {
     @Bind(R.id.text)
     TextView test;
-    @Bind(R.id.btn_scan)
+    @Bind(R.id.to_local_music)
     Button mButton;
     @Override
     protected int getLayoutRes() {
@@ -41,10 +41,10 @@ public class MineFragment extends MyBaseFragment {
 
     }
 
-    @OnClick({R.id.btn_scan})
+    @OnClick({R.id.to_local_music})
     public void onClick(View view){
         switch (view.getId()){
-            case R.id.btn_scan:
+            case R.id.to_local_music:
                 startActivity(LocalMusicActivity.class);
                 break;
         }

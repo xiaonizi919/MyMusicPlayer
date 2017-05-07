@@ -5,10 +5,10 @@
               android:orientation="vertical">
 
     <Button
-        android:id="@+id/btn_scan"
+        android:id="@+id/to_local_music"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="扫描本地音乐"
+        android:text="本地音乐"
         android:textColor="#333333"
         android:textSize="16sp"/>
 
