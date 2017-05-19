@@ -5,7 +5,7 @@ android {
     buildToolsVersion "25.0.2"
     defaultConfig {
         applicationId "com.example.administrator.mymusicplayer"
-        minSdkVersion 15
+        minSdkVersion 16
         targetSdkVersion 25
         versionCode 1
         versionName "1.0"
@@ -36,4 +36,5 @@ dependencies {
     compile 'com.squareup.retrofit2:converter-gson:2.2.0'
     compile files('src/main/libs/pinyin4android1.0.jar')
     compile files('src/main/libs/pinyin4j-2.5.0.jar')
+    compile 'com.shuyu:GSYVideoPlayer:1.6.5'
 }

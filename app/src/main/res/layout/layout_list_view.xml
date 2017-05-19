@@ -4,6 +4,7 @@
               android:layout_height="match_parent">
 
     <TextView
+        android:visibility="gone"
         android:gravity="center"
         android:text="listView碎片"
         android:layout_width="match_parent"

@@ -22,16 +22,25 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity android:name=".activity.PlayActivity"
+        <activity
+            android:name=".activity.PlayActivity"
             android:screenOrientation="portrait">
         </activity>
-        <activity android:name=".activity.LocalMusicActivity"
+        <activity
+            android:name=".activity.LocalMusicActivity"
+            android:screenOrientation="portrait">
+        </activity>
+
+        <service
+            android:name=".service.PlayService"
+            android:enabled="true"
+            android:exported="true"
+            android:permission="f"/>
+
+        <activity android:name=".activity.VideoActivity"
+                  android:configChanges="orientation|screenSize|smallestScreenSize|keyboard|keyboardHidden|navigation"
                   android:screenOrientation="portrait">
         </activity>
-        <service android:name=".service.PlayService"
-                 android:enabled="true"
-                 android:exported="true"
-                 android:permission="f"/>
     </application>
 
 </manifest>

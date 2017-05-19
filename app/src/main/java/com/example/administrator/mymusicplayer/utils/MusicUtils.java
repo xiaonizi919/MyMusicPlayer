@@ -71,7 +71,7 @@ public class MusicUtils {
                         song.setSinger(str[0]);
                         song.setSongName(str[1]);
                     }
-                    song.setPinyin(PinYin.getPinYin(song.getSongName()));
+                    song.setPinyin(PinYin.getPinYin(song.getSongName()).toLowerCase());
                     if (null != mScanCallback)
                         mScanCallback.scanProgress(count);
                     count++;
