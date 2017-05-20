@@ -6,6 +6,7 @@ package com.example.administrator.mymusicplayer.config;
 
 public interface MyConfig {
     String position = "position";
+    String progress = "progress";
     int REQUEST_STORAGE = 1;//申请存储权限的requestCode，其他权限依次向下排
     //播放模式
     enum Mode{

@@ -10,6 +10,7 @@ import android.widget.TextView;
 import com.example.administrator.mymusicplayer.R;
 import com.example.administrator.mymusicplayer.base.MyBaseActivity;
 import com.example.administrator.mymusicplayer.bean.SongBean;
+import com.example.administrator.mymusicplayer.config.MyConfig;
 import com.example.administrator.mymusicplayer.service.PlayService;
 
 import org.greenrobot.eventbus.EventBus;
@@ -50,11 +51,13 @@ public class PlayActivity extends MyBaseActivity {
 
     private int state;
     private Intent mIntent;
+    private boolean istracking;
 
     @Override
     protected void initData() {
         EventBus.getDefault().register(this);
         mIntent = new Intent(this, PlayService.class);
+        play.setSelected(PlayService.STATE == PlayService.PLAYING);
     }
 
     @Override
@@ -64,7 +67,26 @@ public class PlayActivity extends MyBaseActivity {
 
     @Override
     protected void setListeners() {
+        mSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                //进度改变事调用
+            }
 
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+                //开始拖动时调用
+                istracking = true;
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                //拖动进度条停止拖动时调用
+                mIntent.setAction(PlayService.ACTION_TRACKING);
+                mIntent.putExtra(MyConfig.progress, seekBar.getProgress());
+                istracking = false;
+            }
+        });
     }
 
     @OnClick({R.id.player_back, R.id.player_mode, R.id.player_pre, R.id.player_play, R.id.player_next, R.id.player_more})
@@ -77,20 +99,24 @@ public class PlayActivity extends MyBaseActivity {
 
                 break;
             case R.id.player_pre://前一首
-
+                mIntent.setAction(PlayService.ACTION_PRE);
+                startService(mIntent);
                 break;
             case R.id.player_play://播放/暂停
                 if (state == PlayService.PLAYING) {
                     showToast("暂停");
+                    play.setSelected(false);
                     mIntent.setAction(PlayService.ACTION_PAUSE);
                 } else if (state == PlayService.PAUSED) {
+                    play.setSelected(true);
                     showToast("继续播放");
                     mIntent.setAction(PlayService.ACTION_START);
                 }
                 startService(mIntent);
                 break;
             case R.id.player_next://下一首
-
+                mIntent.setAction(PlayService.ACTION_NEXT);
+                startService(mIntent);
                 break;
             case R.id.player_more://更多
 
@@ -103,7 +129,8 @@ public class PlayActivity extends MyBaseActivity {
         if (null != songBean) {
             song.setText(songBean.getSongName());
             singer.setText(songBean.getSinger());
-            mSeekBar.setProgress((int) songBean.getProgress());
+            if (!istracking)//手动拖动时不刷新seekBar
+                mSeekBar.setProgress((int) songBean.getProgress());
             currTime.setText(songBean.getCurrTime());
             totalTime.setText(songBean.getTotalTime());
             state = songBean.getState();
