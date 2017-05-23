@@ -1,9 +1,5 @@
 package com.example.administrator.mymusicplayer.utils;
 
-/**
- * Created by lkq on 2017/4/18.
- */
-
 import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;

@@ -12,10 +12,6 @@ import android.widget.TextView;
 import com.example.administrator.mymusicplayer.R;
 import com.example.administrator.mymusicplayer.base.MyBaseActivity;
 
-/**
- * Created by liukq on 2017/4/29.
- */
-
 public class MyTitleBar extends LinearLayout {
     private final String TAG = "MyTitleBar";
     private ImageView back, menu;

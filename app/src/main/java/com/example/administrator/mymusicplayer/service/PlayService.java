@@ -19,10 +19,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by liukq on 2017/4/15.
- * 播放service
- */
 
 public class PlayService extends Service implements MediaPlayer.OnBufferingUpdateListener, MediaPlayer.OnCompletionListener {
     private final String TAG = this.getClass().getSimpleName();

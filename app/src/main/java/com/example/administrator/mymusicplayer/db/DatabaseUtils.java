@@ -2,9 +2,6 @@ package com.example.administrator.mymusicplayer.db;
 
 import android.content.Context;
 
-/**
- * Created by Administrator on 2017/5/6.
- */
 
 public class DatabaseUtils {
     private static  MyOpenHelper mHelper;

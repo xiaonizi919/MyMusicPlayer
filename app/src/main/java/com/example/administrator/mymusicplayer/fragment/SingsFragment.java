@@ -4,7 +4,6 @@ import com.example.administrator.mymusicplayer.R;
 import com.example.administrator.mymusicplayer.base.MyBaseFragment;
 
 /**
- * Created by liukq on 2017/4/15.
  * 歌单
  */
 

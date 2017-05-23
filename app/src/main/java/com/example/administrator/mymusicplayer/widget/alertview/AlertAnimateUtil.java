@@ -4,9 +4,6 @@ import android.view.Gravity;
 
 import com.example.administrator.mymusicplayer.R;
 
-/**
- * Created by Sai on 15/8/9.
- */
 public class AlertAnimateUtil {
     private static final int INVALID = -1;
     /**

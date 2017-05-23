@@ -16,7 +16,6 @@ import java.util.List;
 import butterknife.Bind;
 
 /**
- * Created by liukq on 2017/4/15.
  * 排行榜
  */
 

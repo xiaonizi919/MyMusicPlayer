@@ -11,7 +11,6 @@ import butterknife.Bind;
 import butterknife.OnClick;
 
 /**
- * Created by liukq on 2017/4/15.
  * 底部常驻控制栏 相关逻辑在这里处理
  */
 

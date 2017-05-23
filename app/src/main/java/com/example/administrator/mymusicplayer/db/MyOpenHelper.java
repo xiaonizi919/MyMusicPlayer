@@ -14,10 +14,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-/**
- * Created by Administrator on 2017/5/6.
- */
-
 public class MyOpenHelper extends SQLiteOpenHelper implements IOpenHelper {
     public MyOpenHelper(Context context, String name) {
         super(context, name, null, 1);

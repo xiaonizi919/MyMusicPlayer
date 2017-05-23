@@ -16,10 +16,6 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 
-/**
- * Created by liukq on 2017/4/29.
- */
-
 public class LocalMusicAdapter extends MyBaseAdapter<SongBean> {
     private int selectPosition = -1;
     private HashMap<String, Integer> letterIndexes;

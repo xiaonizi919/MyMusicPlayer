@@ -11,9 +11,6 @@ import com.example.administrator.mymusicplayer.R;
 
 import java.util.List;
 
-/**
- * Created by Sai on 15/8/9.
- */
 public class AlertViewAdapter extends BaseAdapter{
     private List<String> mDatas;
     private List<String> mDestructive;

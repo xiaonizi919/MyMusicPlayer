@@ -11,11 +11,6 @@ import com.example.administrator.mymusicplayer.base.MyBaseFragment;
 import butterknife.Bind;
 import butterknife.OnClick;
 
-/**
- * Created by liukq on 2017/4/15.
- * 我的
- */
-
 public class MineFragment extends MyBaseFragment {
     @Bind(R.id.text)
     TextView test;

@@ -28,6 +28,11 @@ import butterknife.OnClick;
 
 import static com.example.administrator.mymusicplayer.db.DatabaseUtils.getHelper;
 
+/**
+ * LocalMusicActivity:本地的音乐列表
+ * 首次使用：需要读取本地的音乐资源并保存到数据库中
+ * 非首次使用：直接从数据库中读取资源
+ */
 public class LocalMusicActivity extends MyBaseActivity {
 
     @Bind(R.id.local_music_lv)

@@ -9,9 +9,6 @@ import com.example.administrator.mymusicplayer.R;
 
 import java.util.List;
 
-/**
- * Created by lkq on 2017/4/11.
- */
 
 public class MyPagerAdapter extends FragmentStatePagerAdapter {
     private List<Fragment> mFragments;

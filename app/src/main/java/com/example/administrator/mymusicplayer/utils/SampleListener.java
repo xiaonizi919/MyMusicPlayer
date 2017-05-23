@@ -2,10 +2,6 @@ package com.example.administrator.mymusicplayer.utils;
 
 import com.shuyu.gsyvideoplayer.listener.StandardVideoAllCallBack;
 
-/**
- * Created by shuyu on 2016/11/23.
- */
-
 public class SampleListener implements StandardVideoAllCallBack {
 
     @Override

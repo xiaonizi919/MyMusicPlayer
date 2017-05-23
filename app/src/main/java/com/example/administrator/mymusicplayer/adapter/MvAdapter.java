@@ -13,10 +13,6 @@ import com.example.administrator.mymusicplayer.bean.MvBean;
 
 import java.util.List;
 
-/**
- * Created by liukq on 2017/5/19.
- */
-
 public class MvAdapter extends MyBaseAdapter<MvBean> {
     public MvAdapter(Context mContext, List<MvBean> mData) {
         super(mContext, mData);

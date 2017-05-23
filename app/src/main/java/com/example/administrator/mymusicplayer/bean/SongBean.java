@@ -1,8 +1,5 @@
 package com.example.administrator.mymusicplayer.bean;
 
-/**
- * Created by lkq on 2017/4/18.
- */
 
 public class SongBean {
     /**
