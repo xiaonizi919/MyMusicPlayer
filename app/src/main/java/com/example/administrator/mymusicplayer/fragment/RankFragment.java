@@ -9,11 +9,16 @@ import com.example.administrator.mymusicplayer.activity.VideoActivity;
 import com.example.administrator.mymusicplayer.adapter.MvAdapter;
 import com.example.administrator.mymusicplayer.base.MyBaseFragment;
 import com.example.administrator.mymusicplayer.bean.MvBean;
+import com.example.administrator.mymusicplayer.net.retrofit.NetConfig;
+import com.google.gson.Gson;
+import com.zhy.http.okhttp.OkHttpUtils;
+import com.zhy.http.okhttp.callback.StringCallback;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
+import okhttp3.Call;
 
 /**
  * 排行榜
@@ -22,8 +27,12 @@ import butterknife.Bind;
 public class RankFragment extends MyBaseFragment {
     @Bind(R.id.lv)
     ListView mListView;
-    private List<MvBean> mList;
+    private List<MvBean.RetObjBean> mList;
     private MvAdapter mAdapter;
+    private MvBean mvBean;
+
+
+
     @Override
     protected int getLayoutRes() {
         return R.layout.layout_list_view;
@@ -32,9 +41,6 @@ public class RankFragment extends MyBaseFragment {
     @Override
     protected void initView() {
         mList=new ArrayList<>();
-        for (int i = 0; i < 8; i++) {
-            mList.add(new MvBean());
-        }
 
     }
 
@@ -42,6 +48,29 @@ public class RankFragment extends MyBaseFragment {
     protected void initData() {
         mAdapter=new MvAdapter(getContext(),mList);
         mListView.setAdapter(mAdapter);
+        getVideoData();
+    }
+
+    private void getVideoData() {
+
+        OkHttpUtils.get()
+                .url(NetConfig.BASE_VIDEO_PATH)
+                .addParams("videoType", NetConfig.VIDEO_Type)
+                .build()
+                .execute(new StringCallback() {
+                    @Override
+                    public void onError(Call call, Exception e, int id) {
+
+                    }
+
+                    @Override
+                    public void onResponse(String response, int id) {
+                        mvBean = new Gson().fromJson(response,MvBean.class);
+                        mList.addAll(mvBean.getRetObj());
+                        mAdapter.notifyDataSetChanged();
+                    }
+                });
+
     }
 
     @Override
@@ -49,8 +78,10 @@ public class RankFragment extends MyBaseFragment {
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                startActivity(VideoActivity.class);
+                startActivityForData(VideoActivity.class,mList.get(position).getHdUrl());
             }
         });
     }
+
+
 }

@@ -13,8 +13,8 @@ import com.example.administrator.mymusicplayer.bean.MvBean;
 
 import java.util.List;
 
-public class MvAdapter extends MyBaseAdapter<MvBean> {
-    public MvAdapter(Context mContext, List<MvBean> mData) {
+public class MvAdapter extends MyBaseAdapter<MvBean.RetObjBean> {
+    public MvAdapter(Context mContext, List<MvBean.RetObjBean> mData) {
         super(mContext, mData);
     }
 
@@ -29,6 +29,9 @@ public class MvAdapter extends MyBaseAdapter<MvBean> {
             holder= (ViewHolder) convertView.getTag();
         }
 
+        MvBean.RetObjBean retObjBean =  mData.get(position);
+        loadImage(holder.icon,retObjBean.getImageUrl());
+        holder.title.setText(retObjBean.getTitle());
         return convertView;
     }
 

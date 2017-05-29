@@ -27,10 +27,13 @@ public class VideoActivity extends MyBaseActivity {
 
     private boolean isPlay;
     private boolean isFull;
-    final String url = "http://baobab.wdjcdn.com/14564977406580.mp4";
+    private String url;
 
     @Override
     protected void initData() {
+
+        url = getIntent().getStringExtra("data");
+
         mOrientationUtils = new OrientationUtils(this, mVideoPlayer);
         //初始化不打开外部的旋转
         mOrientationUtils.setEnable(false);

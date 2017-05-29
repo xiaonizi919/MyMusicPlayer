@@ -37,4 +37,5 @@ dependencies {
     compile files('src/main/libs/pinyin4android1.0.jar')
     compile files('src/main/libs/pinyin4j-2.5.0.jar')
     compile 'com.shuyu:GSYVideoPlayer:1.6.5'
+    compile 'com.zhy:okhttputils:2.6.2'
 }

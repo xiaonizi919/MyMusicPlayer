@@ -2,7 +2,7 @@
     <array name="main_tab">
         <item>我的</item>
         <item>歌单</item>
-        <item>排行榜</item>
+        <item>MV</item>
     </array>
     <string name="app_name">爱音乐</string>
 </resources>
