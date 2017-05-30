@@ -14,7 +14,6 @@ import com.example.administrator.mymusicplayer.base.MyBaseFragment;
 import com.example.administrator.mymusicplayer.bean.SongBean;
 import com.example.administrator.mymusicplayer.config.MyConfig;
 import com.example.administrator.mymusicplayer.config.NetConfig;
-import com.example.administrator.mymusicplayer.service.NetPlayService;
 import com.example.administrator.mymusicplayer.service.PlayService;
 
 import org.greenrobot.eventbus.EventBus;
@@ -87,12 +86,5 @@ public class SingsFragment extends MyBaseFragment implements AdapterView.OnItemC
             startActivity(PlayActivity.class);
             curIndex = tarIndex;
         }
-    }
-
-    private void startPlay(int type,String path){
-        Intent intent = new Intent(getActivity(),NetPlayService.class);
-        intent.putExtra("type",type);
-        intent.putExtra("musicpath", path);
-        getActivity().startService(intent);
     }
 }

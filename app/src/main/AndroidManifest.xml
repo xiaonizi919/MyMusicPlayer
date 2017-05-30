@@ -38,7 +38,6 @@
             android:enabled="true"
             android:exported="true"
             android:permission="f"/>
-        <service android:name=".service.NetPlayService"/>
 
         <activity android:name=".activity.VideoActivity"
                   android:configChanges="orientation|screenSize|smallestScreenSize|keyboard|keyboardHidden|navigation"
