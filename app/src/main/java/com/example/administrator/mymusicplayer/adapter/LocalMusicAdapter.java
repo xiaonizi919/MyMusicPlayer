@@ -28,23 +28,25 @@ public class LocalMusicAdapter extends MyBaseAdapter<SongBean> {
         Collections.sort(mData, new Comparator<SongBean>() {
             @Override
             public int compare(SongBean o1, SongBean o2) {
-                if (((byte)(o1.getPinyin().toCharArray()[0])) > ((byte)(o2.getPinyin().toCharArray()[0]))){
+                if (((byte) (o1.getPinyin().toCharArray()[0])) > ((byte) (o2.getPinyin().toCharArray()[0]))) {
                     return 1;
-                }else if (((byte)(o1.getPinyin().toCharArray()[0])) < ((byte)(o2.getPinyin().toCharArray()[0]))){
+                } else if (((byte) (o1.getPinyin().toCharArray()[0])) < ((byte) (o2.getPinyin().toCharArray()[0]))) {
                     return -1;
-                }else{
+                } else {
                     return 0;
                 }
             }
         });
-        for (int i = 0 ; i < mData.size() ; i ++){
-            if (!mData.get(i).getPinyin().substring(0,1).equals(temp)){
-                temp = mData.get(i).getPinyin().substring(0,1);
-                letterIndexes.put(mData.get(i).getPinyin().substring(0,1).toLowerCase(),i);
+        for (int i = 0; i < mData.size(); i++) {
+            if (!mData.get(i).getPinyin().substring(0, 1).equals(temp)) {
+                temp = mData.get(i).getPinyin().substring(0, 1);
+                letterIndexes.put(mData.get(i).getPinyin().substring(0, 1).toLowerCase(), i);
             }
         }
-        if (MainActivity.songList.size()==0)
-            MainActivity.songList.addAll(mData);
+        if (MainActivity.songList.size() > 0) {
+            MainActivity.songList.clear();
+        }
+        MainActivity.songList.addAll(mData);
     }
 
     @Override
@@ -57,10 +59,10 @@ public class LocalMusicAdapter extends MyBaseAdapter<SongBean> {
         } else {
             holder = (ViewHolder) convertView.getTag();
         }
-        if (selectPosition==position){
+        if (selectPosition == position) {
             holder.song.setTextColor(Color.BLUE);
             holder.singer.setTextColor(Color.BLUE);
-        }else{
+        } else {
             holder.song.setTextColor(Color.parseColor("#333333"));
             holder.singer.setTextColor(Color.parseColor("#333333"));
         }
@@ -74,9 +76,9 @@ public class LocalMusicAdapter extends MyBaseAdapter<SongBean> {
         notifyDataSetChanged();
     }
 
-    public int getLetterPosition(String s){
-        Integer integer=letterIndexes.get(s.toLowerCase());
-        return integer==null?-1:integer;
+    public int getLetterPosition(String s) {
+        Integer integer = letterIndexes.get(s.toLowerCase());
+        return integer == null ? -1 : integer;
     }
 
     class ViewHolder {

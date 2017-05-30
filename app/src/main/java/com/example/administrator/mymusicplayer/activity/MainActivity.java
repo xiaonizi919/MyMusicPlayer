@@ -40,7 +40,7 @@ public class MainActivity extends MyBaseActivity {
         MyPagerAdapter pagerAdapter = new MyPagerAdapter(getSupportFragmentManager(), this, fragments);
         mViewPager.setAdapter(pagerAdapter);
         mTabLayout.setupWithViewPager(mViewPager);
-        showQuickControl(true);
+        showQuickControl(false);
         songList=new ArrayList<>();
     }
 

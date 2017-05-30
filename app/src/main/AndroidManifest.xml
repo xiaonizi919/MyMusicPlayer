@@ -15,7 +15,8 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".activity.MainActivity"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait"
+            android:launchMode="singleTask">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
@@ -24,6 +25,7 @@
         </activity>
         <activity
             android:name=".activity.PlayActivity"
+            android:launchMode="singleTop"
             android:screenOrientation="portrait">
         </activity>
         <activity
@@ -36,6 +38,7 @@
             android:enabled="true"
             android:exported="true"
             android:permission="f"/>
+        <service android:name=".service.NetPlayService"/>
 
         <activity android:name=".activity.VideoActivity"
                   android:configChanges="orientation|screenSize|smallestScreenSize|keyboard|keyboardHidden|navigation"

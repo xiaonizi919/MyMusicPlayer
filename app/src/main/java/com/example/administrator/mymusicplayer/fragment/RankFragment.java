@@ -9,7 +9,7 @@ import com.example.administrator.mymusicplayer.activity.VideoActivity;
 import com.example.administrator.mymusicplayer.adapter.MvAdapter;
 import com.example.administrator.mymusicplayer.base.MyBaseFragment;
 import com.example.administrator.mymusicplayer.bean.MvBean;
-import com.example.administrator.mymusicplayer.net.retrofit.NetConfig;
+import com.example.administrator.mymusicplayer.config.NetConfig;
 import com.google.gson.Gson;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;

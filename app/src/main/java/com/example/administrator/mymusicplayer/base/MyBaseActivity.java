@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Window;
 import android.widget.Toast;
@@ -117,38 +116,6 @@ public abstract class MyBaseActivity extends AppCompatActivity {
         ButterKnife.unbind(this);
     }
 
-    @Override
-    protected void onStop() {
-        super.onStop();
-        if (showLifeLog)
-            Log.e(TAG, "onStop: is come in" );
-    }
 
-    @Override
-    protected void onPause() {
-        super.onPause();
-        if (showLifeLog)
-            Log.e(TAG, "onPause: is come in" );
-    }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-        if (showLifeLog)
-            Log.e(TAG, "onStart: is come in" );
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        if (showLifeLog)
-        Log.e(TAG, "onResume: is come in" );
-    }
-
-    @Override
-    protected void onRestart() {
-        super.onRestart();
-        if (showLifeLog)
-            Log.e(TAG, "onRestart: is come in" );
-    }
 }

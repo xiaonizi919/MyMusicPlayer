@@ -128,6 +128,7 @@
     </LinearLayout>
 
     <android.support.v4.view.ViewPager
+        android:visibility="gone"
         android:id="@+id/player_vp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

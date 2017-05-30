@@ -39,19 +39,20 @@ public class LocalMusicActivity extends MyBaseActivity {
     ListView mListView;
     @Bind(R.id.side_letter_bar)
     SideLetterBar mSideLetterBar;
-    private List<SongBean> mSongList;
     @Bind(R.id.tv_letter_overlay)
     TextView mOverlay;
     @Bind(R.id.btn_scan)
     Button mButton;
 
+    private List<SongBean> mSongList;
     private AlertView mAlertView;
     private int longClickPosition = -1;
     private LocalMusicAdapter mAdapter;
+    private int curIndex=-1,tarIndex;
 
     @Override
     protected void initData() {
-        showQuickControl(true);
+        showQuickControl(false);
         mSongList = new ArrayList<>();
         mSideLetterBar.setOverlay(mOverlay);
     }
@@ -74,11 +75,18 @@ public class LocalMusicActivity extends MyBaseActivity {
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent = new Intent(LocalMusicActivity.this, PlayService.class);
-                intent.setAction(PlayService.ACTION_PLAY_LIST);
-                intent.putExtra(MyConfig.position, position);
-                startService(intent);
-                mAdapter.setSelectPosition(position);
+                tarIndex = position;
+                if (curIndex == tarIndex){
+                    startActivity(new Intent(LocalMusicActivity.this,PlayActivity.class));
+                }else {
+                    Intent intent = new Intent(LocalMusicActivity.this, PlayService.class);
+                    intent.setAction(PlayService.ACTION_PLAY_LIST);
+                    intent.putExtra(MyConfig.position, position);
+                    startService(intent);
+                    mAdapter.setSelectPosition(position);
+                    startActivity(new Intent(LocalMusicActivity.this,PlayActivity.class));
+                    curIndex = tarIndex;
+                }
             }
         });
         mListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {

@@ -1,7 +1,10 @@
 package com.example.administrator.mymusicplayer.bean;
 
 
-public class SongBean {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public class SongBean implements Parcelable{
     /**
      * 歌手
      */
@@ -69,10 +72,71 @@ public class SongBean {
      */
     private boolean isInPlayList;
     /**
-     * 来源 分为本地音乐 网络音乐等
+     * 来源 分为1:本地音乐 2:网络音乐等
      */
     private String source;
 
+    public SongBean() {
+    }
+
+    public SongBean(String singer, String songName, String path,String source) {
+        this.singer = singer;
+        this.songName = songName;
+        this.path = path;
+        this.source = source;
+    }
+
+    public SongBean(String singer, String songName, String path, int duration, long size, String album, String albumId, String albumArt, int state, int bufferPercent, float progress, String totalTime, String currTime, int currPosition, String pinyin, boolean isInPlayList, String source) {
+        this.singer = singer;
+        this.songName = songName;
+        this.path = path;
+        this.duration = duration;
+        this.size = size;
+        this.album = album;
+        this.albumId = albumId;
+        this.albumArt = albumArt;
+        this.state = state;
+        this.bufferPercent = bufferPercent;
+        this.progress = progress;
+        this.totalTime = totalTime;
+        this.currTime = currTime;
+        this.currPosition = currPosition;
+        this.pinyin = pinyin;
+        this.isInPlayList = isInPlayList;
+        this.source = source;
+    }
+
+    protected SongBean(Parcel in) {
+        singer = in.readString();
+        songName = in.readString();
+        path = in.readString();
+        duration = in.readInt();
+        size = in.readLong();
+        album = in.readString();
+        albumId = in.readString();
+        albumArt = in.readString();
+        state = in.readInt();
+        bufferPercent = in.readInt();
+        progress = in.readFloat();
+        totalTime = in.readString();
+        currTime = in.readString();
+        currPosition = in.readInt();
+        pinyin = in.readString();
+        isInPlayList = in.readByte() != 0;
+        source = in.readString();
+    }
+
+    public static final Creator<SongBean> CREATOR = new Creator<SongBean>() {
+        @Override
+        public SongBean createFromParcel(Parcel in) {
+            return new SongBean(in);
+        }
+
+        @Override
+        public SongBean[] newArray(int size) {
+            return new SongBean[size];
+        }
+    };
 
     public int getDuration() {
         return duration;
@@ -125,7 +189,9 @@ public class SongBean {
     @Override
     public String toString() {
         return "SongBean{" +
-                "songName='" + songName + '\'' +
+                "singer='" + singer + '\'' +
+                ", songName='" + songName + '\'' +
+                ", path='" + path + '\'' +
                 ", pinyin='" + pinyin + '\'' +
                 '}';
     }
@@ -216,5 +282,31 @@ public class SongBean {
 
     public void setSource(String source) {
         this.source = source;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(singer);
+        dest.writeString(songName);
+        dest.writeString(path);
+        dest.writeInt(duration);
+        dest.writeLong(size);
+        dest.writeString(album);
+        dest.writeString(albumId);
+        dest.writeString(albumArt);
+        dest.writeInt(state);
+        dest.writeInt(bufferPercent);
+        dest.writeFloat(progress);
+        dest.writeString(totalTime);
+        dest.writeString(currTime);
+        dest.writeInt(currPosition);
+        dest.writeString(pinyin);
+        dest.writeByte((byte) (isInPlayList ? 1 : 0));
+        dest.writeString(source);
     }
 }

@@ -14,6 +14,7 @@ import com.example.administrator.mymusicplayer.bean.SongBean;
 import com.example.administrator.mymusicplayer.config.MyConfig;
 
 import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -34,6 +35,8 @@ public class PlayService extends Service implements MediaPlayer.OnBufferingUpdat
     //用于更新播放时间intent的action
     public static final String ACTION_UPDATE_TIME = "ACTION_UPDATE_TIME";
     public static final String ACTION_TRACKING = "ACTION_TRACKING";
+
+    public static final String TO_UPDATE_MUSICLIST = "update_musiclist";
 
     public static int STATE;//播放状态
     public static final int PLAYING = 4;
@@ -84,8 +87,8 @@ public class PlayService extends Service implements MediaPlayer.OnBufferingUpdat
                 mp.start();
                 break;
             case ACTION_TRACKING://拖动状态
-                STATE=TRACKING;
-                trackProgress=intent.getIntExtra(MyConfig.progress,0);
+                STATE = TRACKING;
+                trackProgress = intent.getIntExtra(MyConfig.progress, 0);
                 break;
         }
         return super.onStartCommand(intent, flags, startId);
@@ -94,7 +97,6 @@ public class PlayService extends Service implements MediaPlayer.OnBufferingUpdat
     //播放本地音乐
     private void playMusic(SongBean songBean) {
         currSong = songBean;
-        Log.e(TAG, "playMusic: 播放," + songBean.getSongName() + "," + songBean.getPath());
         flag = false;
         mp.reset();
         try {
@@ -116,10 +118,10 @@ public class PlayService extends Service implements MediaPlayer.OnBufferingUpdat
      */
     private void playNext(int flag) {
         if (flag == 1) {
-            mCurrPosition=(mCurrPosition-1)%musicList.size();//上一首的position
+            mCurrPosition = (mCurrPosition + musicList.size() - 1) % musicList.size();//上一首的position
             Toast.makeText(this, "上一首", Toast.LENGTH_SHORT).show();
         } else {
-            mCurrPosition=(mCurrPosition+1)%musicList.size();//下一首的position
+            mCurrPosition = (mCurrPosition + 1) % musicList.size();//下一首的position
             Toast.makeText(this, "下一首", Toast.LENGTH_SHORT).show();
         }
         playMusic(musicList.get(mCurrPosition));
@@ -127,6 +129,7 @@ public class PlayService extends Service implements MediaPlayer.OnBufferingUpdat
 
     @Override
     public void onCreate() {
+        EventBus.getDefault().register(this);
         getListFormDb();
         timeIntent = new Intent(ACTION_UPDATE_TIME);
         mp.setAudioStreamType(AudioManager.STREAM_MUSIC);//设置播放类型为音乐
@@ -142,6 +145,7 @@ public class PlayService extends Service implements MediaPlayer.OnBufferingUpdat
         musicList = new ArrayList<>();
         playList = new ArrayList<>();
         musicList.addAll(MainActivity.songList);
+        Log.e(TAG,musicList.toString());
         for (SongBean songBean : musicList) {
             if (songBean.isInPlayList())
                 playList.add(songBean);
@@ -188,9 +192,9 @@ public class PlayService extends Service implements MediaPlayer.OnBufferingUpdat
                         currSong.setBufferPercent(bufferPercent);
                         currSong.setProgress(progress);
                         currSong.setCurrPosition(curr);
-                        if (STATE==TRACKING){//拖动
+                        if (STATE == TRACKING) {//拖动
                             mp.seekTo(trackProgress);
-                            STATE=PLAYING;
+                            STATE = PLAYING;
                             currSong.setState(STATE);
                             currSong.setProgress(trackProgress);
                             currSong.setCurrTime(toTime(mp.getCurrentPosition()));
@@ -221,5 +225,18 @@ public class PlayService extends Service implements MediaPlayer.OnBufferingUpdat
         else
             ss = "" + s;
         return mm + ":" + ss;
+    }
+
+    @Subscribe
+    public void updata(String updata){
+        if (updata.equals(TO_UPDATE_MUSICLIST)){
+            getListFormDb();
+        }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
     }
 }

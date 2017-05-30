@@ -60,6 +60,7 @@
     </RelativeLayout>
 
     <FrameLayout
+        android:visibility="gone"
         android:id="@+id/bottom_container"
         android:layout_width="match_parent"
         android:layout_height="50dp"/>
