@@ -13,6 +13,7 @@ import android.widget.TextView;
 import com.example.administrator.mymusicplayer.R;
 import com.example.administrator.mymusicplayer.adapter.LocalMusicAdapter;
 import com.example.administrator.mymusicplayer.base.MyBaseActivity;
+import com.example.administrator.mymusicplayer.bean.MyEvent;
 import com.example.administrator.mymusicplayer.bean.SongBean;
 import com.example.administrator.mymusicplayer.config.MyConfig;
 import com.example.administrator.mymusicplayer.db.DatabaseUtils;
@@ -25,6 +26,7 @@ import com.example.administrator.mymusicplayer.widget.alertview.OnItemClickListe
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -54,26 +56,17 @@ public class LocalMusicActivity extends MyBaseActivity {
     private AlertView mAlertView;
     private int longClickPosition = -1;
     private LocalMusicAdapter mAdapter;
-    public static int curIndex=-1,tarIndex;
+    private int curIndex = -1, tarIndex;
 
-
-    Handler handler = new Handler(){
+    Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
-            if (msg.what == 1){
+            if (msg.what == 1) {
                 mAdapter.setSelectPosition(curIndex);
             }
         }
     };
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        if (curIndex != -1){
-            mAdapter.setSelectPosition(curIndex);
-        }
-    }
 
     @Override
     protected void initData() {
@@ -102,15 +95,15 @@ public class LocalMusicActivity extends MyBaseActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 tarIndex = position;
-                if (curIndex == tarIndex){
-                    startActivity(new Intent(LocalMusicActivity.this,PlayActivity.class));
-                }else {
+                if (curIndex == tarIndex) {
+                    startActivity(new Intent(LocalMusicActivity.this, PlayActivity.class));
+                } else {
                     Intent intent = new Intent(LocalMusicActivity.this, PlayService.class);
                     intent.setAction(PlayService.ACTION_PLAY_LIST);
                     intent.putExtra(MyConfig.position, position);
                     startService(intent);
                     mAdapter.setSelectPosition(position);
-                    startActivity(new Intent(LocalMusicActivity.this,PlayActivity.class));
+                    startActivity(new Intent(LocalMusicActivity.this, PlayActivity.class));
                     curIndex = tarIndex;
                 }
             }
@@ -164,11 +157,22 @@ public class LocalMusicActivity extends MyBaseActivity {
         }
     }
 
-    @Subscribe
-    public void event(int position) {
-        Log.e("TAG","接收广播"+position);
-        curIndex = position;
-        handler.sendEmptyMessage(1);
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void event(MyEvent myEvent) {
+        if (myEvent.getTarLocalPos()!=-1&&PlayService.playType==1){
+            Log.e("TAG", "接收广播" + myEvent.getTarLocalPos());
+            curIndex = myEvent.getTarLocalPos();
+            handler.sendEmptyMessage(1);
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (PlayService.mCurrPosition!=-1&&null!=mSongList&&PlayService.playType==1){
+            curIndex=PlayService.mCurrPosition;
+            mAdapter.setSelectPosition(curIndex);
+        }
     }
 
     @Override

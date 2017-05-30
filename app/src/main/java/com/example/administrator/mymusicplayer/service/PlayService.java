@@ -10,13 +10,14 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.example.administrator.mymusicplayer.activity.MainActivity;
+import com.example.administrator.mymusicplayer.bean.MyEvent;
 import com.example.administrator.mymusicplayer.bean.SongBean;
 import com.example.administrator.mymusicplayer.config.MyConfig;
+import com.example.administrator.mymusicplayer.fragment.SingsFragment;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,15 +31,11 @@ public class PlayService extends Service implements MediaPlayer.OnBufferingUpdat
     //用于intent启动服务时设置的action
     public static final String ACTION_PRE = "ACTION_PRE";
     public static final String ACTION_NEXT = "ACTION_NEXT";
-    public static final String ACTION_PLAY_LIST = "ACTION_PLAY_LIST";
-    public static final String ACTION_PLAY_CURR = "ACTION_PLAY_CURR";
+    public static final String ACTION_PLAY_LIST = "ACTION_PLAY_LOCAL";
+    public static final String ACTION_PLAY_NET = "ACTION_PLAY_NET";
     public static final String ACTION_PAUSE = "ACTION_PAUSE";
     public static final String ACTION_START = "ACTION_START";
-    //用于更新播放时间intent的action
-    public static final String ACTION_UPDATE_TIME = "ACTION_UPDATE_TIME";
     public static final String ACTION_TRACKING = "ACTION_TRACKING";
-
-    public static final String TO_UPDATE_MUSICLIST = "update_musiclist";
 
     public static int STATE;//播放状态
     public static final int PLAYING = 4;
@@ -49,23 +46,20 @@ public class PlayService extends Service implements MediaPlayer.OnBufferingUpdat
     private int bufferPercent = 0;
 
     private List<SongBean> musicList;//音乐列表
-    private List<SongBean> playList;//记录播放顺序
 
     private SongBean currSong;//当前播放的音乐
-    private SongBean nextSong;//下一首
-    private SongBean preSong;//上一首
 
     private boolean flag = true;//播放是否完成的标志
 
-    private Intent timeIntent;//用于记录播放的时间，并刷新seekBar，通过广播通知
-    private String totalTime;
-    private String currTime;//当前播放时间
-    private int mCurrPosition;
+    public static int mCurrPosition = -1;
     private int trackProgress;
+    private String mAction;
+    public static int playType=-1;
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        Log.e("TAG","onStartCommand222222222");
+        Log.e("TAG", "onStartCommand222222222");
+        mAction = intent.getAction();
         switch (intent.getAction()) {
             case ACTION_PRE://上一首
                 playNext(1);
@@ -75,11 +69,15 @@ public class PlayService extends Service implements MediaPlayer.OnBufferingUpdat
                 break;
             case ACTION_PLAY_LIST://播放列表内音乐
                 STATE = PLAYING;
+                getListFormDb();
                 mCurrPosition = intent.getIntExtra(position, 0);
                 playMusic(musicList.get(mCurrPosition));
                 break;
-            case ACTION_PLAY_CURR://播放当前正在播放的(处于暂停状态)音乐
+            case ACTION_PLAY_NET://播放在线音乐
                 STATE = PLAYING;
+                getListFormNet();
+                mCurrPosition = intent.getIntExtra(position, 0);
+                playMusic(musicList.get(mCurrPosition));
                 break;
             case ACTION_PAUSE://暂停
                 STATE = PAUSED;
@@ -101,17 +99,18 @@ public class PlayService extends Service implements MediaPlayer.OnBufferingUpdat
     private void playMusic(SongBean songBean) {
         currSong = songBean;
         flag = false;
-        mp.reset();
-        try {
-            mp.setDataSource(songBean.getPath());
-            mp.prepare();
-            flag = true;
-            STATE = PLAYING;
-            mp.start();
-            updateSeekBar();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        Log.e(TAG, "playMusic: type="+mAction+",name:" + songBean.getSongName());
+//        mp.reset();
+//        try {
+//            mp.setDataSource(songBean.getPath());
+//            mp.prepare();
+//            flag = true;
+//            STATE = PLAYING;
+//            mp.start();
+//            updateSeekBar();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
     }
 
     /**
@@ -128,15 +127,19 @@ public class PlayService extends Service implements MediaPlayer.OnBufferingUpdat
             Toast.makeText(this, "下一首", Toast.LENGTH_SHORT).show();
         }
         playMusic(musicList.get(mCurrPosition));
-        EventBus.getDefault().post(mCurrPosition);//发送广播
+        MyEvent myEvent = new MyEvent();
+        if (mAction.equals(ACTION_PLAY_LIST))
+            myEvent.setTarLocalPos(mCurrPosition);
+        else
+            myEvent.setTarNetPos(mCurrPosition);
+        EventBus.getDefault().post(myEvent);//发送广播
+
     }
 
     @Override
     public void onCreate() {
-        Log.e("TAG","onCreate11111111");
+        Log.e("TAG", "onCreate11111111");
         EventBus.getDefault().register(this);
-        getListFormDb();
-        timeIntent = new Intent(ACTION_UPDATE_TIME);
         mp.setAudioStreamType(AudioManager.STREAM_MUSIC);//设置播放类型为音乐
         mp.setOnBufferingUpdateListener(this);//缓冲进度
         mp.setOnCompletionListener(this);
@@ -147,13 +150,26 @@ public class PlayService extends Service implements MediaPlayer.OnBufferingUpdat
      * 从数据库中或者音乐列表和播放列表
      */
     private void getListFormDb() {
-        musicList = new ArrayList<>();
-        playList = new ArrayList<>();
-        musicList.addAll(MainActivity.songList);
-        for (SongBean songBean : musicList) {
-            if (songBean.isInPlayList())
-                playList.add(songBean);
+        if (null != musicList) {//置空
+            musicList.clear();
+            musicList = null;
         }
+        musicList = new ArrayList<>();
+        musicList.addAll(MainActivity.songList);
+        playType=1;
+    }
+
+    /**
+     * 获取在线播放list
+     */
+    private void getListFormNet() {
+        if (null != musicList) {
+            musicList.clear();
+            musicList = null;
+        }
+        musicList = new ArrayList<>();
+        musicList.addAll(SingsFragment.mList);
+        playType=2;
     }
 
     @Nullable
