@@ -1,6 +1,8 @@
 package com.example.administrator.mymusicplayer.fragment;
 
 import android.content.Intent;
+import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -17,6 +19,7 @@ import com.example.administrator.mymusicplayer.config.NetConfig;
 import com.example.administrator.mymusicplayer.service.PlayService;
 
 import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,6 +40,19 @@ public class SingsFragment extends MyBaseFragment implements AdapterView.OnItemC
 
     private int curIndex=-1,tarIndex;
 
+
+    Handler handler = new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            if (msg.what == 1){
+                musicAdapter.setSelectPosition(curIndex);
+            }
+        }
+    };
+
+
+
     @Override
     protected int getLayoutRes() {
         return R.layout.layout_list_view;
@@ -44,7 +60,20 @@ public class SingsFragment extends MyBaseFragment implements AdapterView.OnItemC
 
     @Override
     protected void initView() {
+        EventBus.getDefault().register(this);
+    }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (MainActivity.songList.size() > 0) {
+            MainActivity.songList.clear();
+        }
+        MainActivity.songList.addAll(mList);
+
+        if (curIndex != 1){
+            musicAdapter.setSelectPosition(curIndex);
+        }
     }
 
     @Override
@@ -65,15 +94,6 @@ public class SingsFragment extends MyBaseFragment implements AdapterView.OnItemC
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//        startPlay(1,mList.get(position).getPath());
-        if (curIndex == -1){
-            if (MainActivity.songList.size() > 0) {
-                MainActivity.songList.clear();
-            }
-            MainActivity.songList.addAll(mList);
-            EventBus.getDefault().post(PlayService.TO_UPDATE_MUSICLIST);
-            Log.e("TAG",MainActivity.songList.toString());
-        }
         tarIndex = position;
         if (curIndex == tarIndex){
             startActivity(PlayActivity.class);
@@ -86,5 +106,23 @@ public class SingsFragment extends MyBaseFragment implements AdapterView.OnItemC
             startActivity(PlayActivity.class);
             curIndex = tarIndex;
         }
+    }
+
+    @Subscribe
+    public void event(int position) {
+        Log.e("TAG","接收广播"+position);
+        curIndex = position;
+        handler.sendEmptyMessage(1);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
     }
 }

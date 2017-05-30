@@ -1,6 +1,9 @@
 package com.example.administrator.mymusicplayer.activity;
 
 import android.content.Intent;
+import android.os.Handler;
+import android.os.Message;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -19,6 +22,9 @@ import com.example.administrator.mymusicplayer.utils.sharepre.ShareUtils;
 import com.example.administrator.mymusicplayer.widget.SideLetterBar;
 import com.example.administrator.mymusicplayer.widget.alertview.AlertView;
 import com.example.administrator.mymusicplayer.widget.alertview.OnItemClickListener;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,10 +54,30 @@ public class LocalMusicActivity extends MyBaseActivity {
     private AlertView mAlertView;
     private int longClickPosition = -1;
     private LocalMusicAdapter mAdapter;
-    private int curIndex=-1,tarIndex;
+    public static int curIndex=-1,tarIndex;
+
+
+    Handler handler = new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            if (msg.what == 1){
+                mAdapter.setSelectPosition(curIndex);
+            }
+        }
+    };
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (curIndex != -1){
+            mAdapter.setSelectPosition(curIndex);
+        }
+    }
 
     @Override
     protected void initData() {
+        EventBus.getDefault().register(this);
         showQuickControl(false);
         mSongList = new ArrayList<>();
         mSideLetterBar.setOverlay(mOverlay);
@@ -138,4 +164,16 @@ public class LocalMusicActivity extends MyBaseActivity {
         }
     }
 
+    @Subscribe
+    public void event(int position) {
+        Log.e("TAG","接收广播"+position);
+        curIndex = position;
+        handler.sendEmptyMessage(1);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
+    }
 }

@@ -20,6 +20,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.example.administrator.mymusicplayer.config.MyConfig.position;
+
 
 public class PlayService extends Service implements MediaPlayer.OnBufferingUpdateListener, MediaPlayer.OnCompletionListener {
     private final String TAG = this.getClass().getSimpleName();
@@ -63,6 +65,7 @@ public class PlayService extends Service implements MediaPlayer.OnBufferingUpdat
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+        Log.e("TAG","onStartCommand222222222");
         switch (intent.getAction()) {
             case ACTION_PRE://上一首
                 playNext(1);
@@ -72,7 +75,7 @@ public class PlayService extends Service implements MediaPlayer.OnBufferingUpdat
                 break;
             case ACTION_PLAY_LIST://播放列表内音乐
                 STATE = PLAYING;
-                mCurrPosition = intent.getIntExtra(MyConfig.position, 0);
+                mCurrPosition = intent.getIntExtra(position, 0);
                 playMusic(musicList.get(mCurrPosition));
                 break;
             case ACTION_PLAY_CURR://播放当前正在播放的(处于暂停状态)音乐
@@ -125,10 +128,12 @@ public class PlayService extends Service implements MediaPlayer.OnBufferingUpdat
             Toast.makeText(this, "下一首", Toast.LENGTH_SHORT).show();
         }
         playMusic(musicList.get(mCurrPosition));
+        EventBus.getDefault().post(mCurrPosition);//发送广播
     }
 
     @Override
     public void onCreate() {
+        Log.e("TAG","onCreate11111111");
         EventBus.getDefault().register(this);
         getListFormDb();
         timeIntent = new Intent(ACTION_UPDATE_TIME);
@@ -145,7 +150,6 @@ public class PlayService extends Service implements MediaPlayer.OnBufferingUpdat
         musicList = new ArrayList<>();
         playList = new ArrayList<>();
         musicList.addAll(MainActivity.songList);
-        Log.e(TAG,musicList.toString());
         for (SongBean songBean : musicList) {
             if (songBean.isInPlayList())
                 playList.add(songBean);
@@ -227,16 +231,15 @@ public class PlayService extends Service implements MediaPlayer.OnBufferingUpdat
         return mm + ":" + ss;
     }
 
-    @Subscribe
-    public void updata(String updata){
-        if (updata.equals(TO_UPDATE_MUSICLIST)){
-            getListFormDb();
-        }
-    }
-
     @Override
     public void onDestroy() {
         super.onDestroy();
         EventBus.getDefault().unregister(this);
+    }
+
+    @Subscribe
+    public void event(String pause) {
+        STATE = PAUSED;
+        mp.pause();
     }
 }

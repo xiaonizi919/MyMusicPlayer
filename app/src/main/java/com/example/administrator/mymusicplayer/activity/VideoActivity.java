@@ -12,9 +12,12 @@ import android.widget.RelativeLayout;
 
 import com.example.administrator.mymusicplayer.R;
 import com.example.administrator.mymusicplayer.base.MyBaseActivity;
+import com.example.administrator.mymusicplayer.service.PlayService;
 import com.shuyu.gsyvideoplayer.listener.StandardVideoAllCallBack;
 import com.shuyu.gsyvideoplayer.utils.OrientationUtils;
 import com.shuyu.gsyvideoplayer.video.StandardGSYVideoPlayer;
+
+import org.greenrobot.eventbus.EventBus;
 
 import butterknife.Bind;
 
@@ -32,6 +35,7 @@ public class VideoActivity extends MyBaseActivity {
     @Override
     protected void initData() {
 
+        EventBus.getDefault().post(PlayService.ACTION_PAUSE);
         url = getIntent().getStringExtra("data");
 
         mOrientationUtils = new OrientationUtils(this, mVideoPlayer);
