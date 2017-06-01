@@ -6,7 +6,6 @@ import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
-import android.util.Log;
 import android.widget.Toast;
 
 import com.example.administrator.mymusicplayer.activity.MainActivity;
@@ -18,6 +17,7 @@ import com.example.administrator.mymusicplayer.fragment.SingsFragment;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -54,43 +54,44 @@ public class PlayService extends Service implements MediaPlayer.OnBufferingUpdat
     public static int mCurrPosition = -1;
     private int trackProgress;
     private String mAction;
-    public static int playType=-1;
+    public static int playType = -1;
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        Log.e("TAG", "onStartCommand222222222");
-        mAction = intent.getAction();
-        switch (intent.getAction()) {
-            case ACTION_PRE://上一首
-                playNext(1);
-                break;
-            case ACTION_NEXT://下一首
-                playNext(2);
-                break;
-            case ACTION_PLAY_LIST://播放列表内音乐
-                STATE = PLAYING;
-                getListFormDb();
-                mCurrPosition = intent.getIntExtra(position, 0);
-                playMusic(musicList.get(mCurrPosition));
-                break;
-            case ACTION_PLAY_NET://播放在线音乐
-                STATE = PLAYING;
-                getListFormNet();
-                mCurrPosition = intent.getIntExtra(position, 0);
-                playMusic(musicList.get(mCurrPosition));
-                break;
-            case ACTION_PAUSE://暂停
-                STATE = PAUSED;
-                mp.pause();
-                break;
-            case ACTION_START://继续播放
-                STATE = PLAYING;
-                mp.start();
-                break;
-            case ACTION_TRACKING://拖动状态
-                STATE = TRACKING;
-                trackProgress = intent.getIntExtra(MyConfig.progress, 0);
-                break;
+        if (intent != null) {
+            mAction = intent.getAction();
+            switch (intent.getAction()) {
+                case ACTION_PRE://上一首
+                    playNext(1);
+                    break;
+                case ACTION_NEXT://下一首
+                    playNext(2);
+                    break;
+                case ACTION_PLAY_LIST://播放列表内音乐
+                    STATE = PLAYING;
+                    getListFormDb();
+                    mCurrPosition = intent.getIntExtra(position, 0);
+                    playMusic(musicList.get(mCurrPosition));
+                    break;
+                case ACTION_PLAY_NET://播放在线音乐
+                    STATE = PLAYING;
+                    getListFormNet();
+                    mCurrPosition = intent.getIntExtra(position, 0);
+                    playMusic(musicList.get(mCurrPosition));
+                    break;
+                case ACTION_PAUSE://暂停
+                    STATE = PAUSED;
+                    mp.pause();
+                    break;
+                case ACTION_START://继续播放
+                    STATE = PLAYING;
+                    mp.start();
+                    break;
+                case ACTION_TRACKING://拖动状态
+                    STATE = TRACKING;
+                    trackProgress = intent.getIntExtra(MyConfig.progress, 0);
+                    break;
+            }
         }
         return super.onStartCommand(intent, flags, startId);
     }
@@ -99,18 +100,17 @@ public class PlayService extends Service implements MediaPlayer.OnBufferingUpdat
     private void playMusic(SongBean songBean) {
         currSong = songBean;
         flag = false;
-        Log.e(TAG, "playMusic: type="+mAction+",name:" + songBean.getSongName());
-//        mp.reset();
-//        try {
-//            mp.setDataSource(songBean.getPath());
-//            mp.prepare();
-//            flag = true;
-//            STATE = PLAYING;
-//            mp.start();
-//            updateSeekBar();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
+        mp.reset();
+        try {
+            mp.setDataSource(songBean.getPath());
+            mp.prepare();
+            flag = true;
+            STATE = PLAYING;
+            mp.start();
+            updateSeekBar();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -138,7 +138,6 @@ public class PlayService extends Service implements MediaPlayer.OnBufferingUpdat
 
     @Override
     public void onCreate() {
-        Log.e("TAG", "onCreate11111111");
         EventBus.getDefault().register(this);
         mp.setAudioStreamType(AudioManager.STREAM_MUSIC);//设置播放类型为音乐
         mp.setOnBufferingUpdateListener(this);//缓冲进度
@@ -156,7 +155,7 @@ public class PlayService extends Service implements MediaPlayer.OnBufferingUpdat
         }
         musicList = new ArrayList<>();
         musicList.addAll(MainActivity.songList);
-        playType=1;
+        playType = 1;
     }
 
     /**
@@ -169,7 +168,7 @@ public class PlayService extends Service implements MediaPlayer.OnBufferingUpdat
         }
         musicList = new ArrayList<>();
         musicList.addAll(SingsFragment.mList);
-        playType=2;
+        playType = 2;
     }
 
     @Nullable

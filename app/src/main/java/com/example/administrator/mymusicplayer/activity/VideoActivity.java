@@ -36,7 +36,8 @@ public class VideoActivity extends MyBaseActivity {
     protected void initData() {
 
         EventBus.getDefault().post(PlayService.ACTION_PAUSE);
-        url = getIntent().getStringExtra("data");
+//        url = getIntent().getStringExtra("data");
+        url ="http://baobab.wdjcdn.com/14564977406580.mp4";
 
         mOrientationUtils = new OrientationUtils(this, mVideoPlayer);
         //初始化不打开外部的旋转
